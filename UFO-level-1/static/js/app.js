@@ -1,14 +1,14 @@
 // from data.js
 var tableData = data;
 
-function addData(Data) {
+function addData(data) {
     // References the HTML table
-    let table = document.getElementById("ufo-table");
+    let table = document.getElementById("table-body");
   
     // Appends rows to table
     for (let i = 0; i < data.length; i++) {
         let newRow = table.insertRow(-1);
-        let keys = [tableData[i].datetime, tableData[i].city, tableData[i].state, tableData[i].country, tableData[i].shape, tableData[i].durationMinutes, tableData[i].comments];
+        let keys = [data[i].datetime, data[i].city, data[i].state, data[i].country, data[i].shape, data[i].durationMinutes, data[i].comments];
         // Appends cells to rows
         for (var j = 0; j < keys.length; j++) {
             let newCell = newRow.insertCell(-1);
@@ -19,44 +19,21 @@ function addData(Data) {
   }
  
 // Calls addData function to populate table
-addData('ufo-table');
+addData(tableData);
 
-var button = d3.select("#filter-btn");
+// Identifies the Filter Table button in the DOM
+var button = document.getElementById("filter-btn");
 
-button.on("click", filterBy);
+// Assigns event listener to the Filter Table button
+button.addEventListener("click", filterBy);
 
 function filterBy() {
-    d3.event.preventDefault();
-    var inputElement = d3.select("#datetime");
-    var inputValue = inputElement.property("value").trim();
+    // Clears the HTML table
+    let table = document.getElementById("table-body");
+    table.innerHTML = "";
+    // Filters data based on user input
+    var inputValue = document.getElementById("datetime").value;
     var filteredData = tableData.filter(tableData => tableData.datetime === inputValue);
-
-    console.log(filteredData);
-
-    if (filteredData.length !== 0) {
-        addData(filteredData);
-    }
-
-    }
-
-// document.getElementById("filter-btn").addEventListener("click", filterBy);
-
-// function filterBy(txtValue) {
-//     var input, filter, table, tr, td, i, txtValue;
-//     input = document.getElementsByClassName("form-control");
-//     filter = input.value;
-//     table = document.getElementsByClassName("table table-striped");
-//     tr = document.getElementsByTagName("tr");
-
-//     for (i = 0; i < tr.length; i++) {
-//         td = tr[i].getElementsByTagName("td")[0];
-//         if (td) {
-//             txtValue = td.textContent || td.innerText;
-//             if (txtValue.indexOf(filter) > -1) {
-//                 tr[i].style.display = "";
-//             } else {
-//                 tr[i].style.display = "none";
-//             }
-//         }
-//     }
-// }
+    // Adds rows back based on filer
+    addData(filteredData);
+}
